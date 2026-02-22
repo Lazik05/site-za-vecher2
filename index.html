@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт за вечер, пока конкуренты платят 300 000 ₽</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-bg: #0a0e13;
+            --color-surface: #141820;
+            --color-card: #1a1f28;
+            --color-accent: #c8ff00;
+            --color-accent-dark: #9fcc00;
+            --color-text: #ffffff;
+            --color-text-secondary: #8a929e;
+            --color-border: #2a2f38;
+            --color-warning: #ff6b00;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px 20px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 60px;
+        }
+
+        .logo::before {
+            content: '●';
+            color: var(--color-accent);
+            font-size: 20px;
+        }
+
+        .nav-top {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 60px;
+        }
+
+        .nav-top a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-top a:hover {
+            color: var(--color-accent);
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--color-accent);
+            color: var(--color-bg);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 40px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .hero-title .highlight {
+            color: var(--color-accent);
+        }
+
+        .hero-description {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            background: var(--color-accent);
+            color: var(--color-bg);
+            border-color: var(--color-accent);
+            font-weight: 600;
+        }
+
+        .step-card {
+            background: var(--color-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .step-card.active {
+            background: var(--color-surface);
+            border-color: var(--color-accent);
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .step-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-number {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+            font-weight: 600;
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .step-meta {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .step-time {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .step-content {
+            padding-top: 20px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .step-description {
+            font-size: 15px;
+            color: var(--color-text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .warning-box {
+            background: rgba(255, 107, 0, 0.1);
+            border-left: 3px solid var(--color-warning);
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            border-radius: 6px;
+        }
+
+        .warning-box strong {
+            color: var(--color-text);
+        }
+
+        .task-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .task-list li {
+            padding: 12px 0;
+            font-size: 15px;
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .task-list li::before {
+            content: '•';
+            color: var(--color-accent);
+            font-size: 20px;
+            font-weight: bold;
+            min-width: 8px;
+        }
+
+        .code-block-wrapper {
+            margin-bottom: 30px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .code-title {
+            font-size: 13px;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .copy-btn {
+            background: var(--color-accent);
+            color: var(--color-bg);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: var(--color-accent-dark);
+        }
+
+        .code-block {
+            background: #0d1117;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #c9d1d9;
+        }
+
+        .code-block .comment {
+            color: #8b949e;
+        }
+
+        .code-block .keyword {
+            color: #ff7b72;
+        }
+
+        .code-block .string {
+            color: #a5d6ff;
+        }
+
+        .code-block .function {
+            color: #d2a8ff;
+        }
+
+        .success-list {
+            background: rgba(200, 255, 0, 0.05);
+            border: 1px solid rgba(200, 255, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .success-list-title {
+            color: var(--color-accent);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .success-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .success-list li {
+            padding: 8px 0;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .success-list li::before {
+            content: '\2192';
+            position: absolute;
+            left: 0;
+            color: var(--color-accent);
+        }
+
+        .complete-btn {
+            width: 100%;
+            background: var(--color-accent);
+            color: var(--color-bg);
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .complete-btn:hover {
+            background: var(--color-accent-dark);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--color-card) 0%, var(--color-surface) 100%);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .cta-badge {
+            display: inline-block;
+            background: rgba(200, 255, 0, 0.15);
+            color: var(--color-accent);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .cta-title {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+
+        .cta-title .highlight {
+            color: var(--color-accent);
+            font-style: italic;
+        }
+
+        .cta-description {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+            max-width: 500px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .cta-features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .cta-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cta-feature::before {
+            content: '\2713';
+            color: var(--color-accent);
+            font-weight: bold;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--color-accent);
+            color: var(--color-bg);
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            background: var(--color-accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(200, 255, 0, 0.3);
+        }
+
+        .social-link {
+            display: block;
+            margin-top: 20px;
+            color: var(--color-text);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .social-link:hover {
+            color: var(--color-accent);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--color-border);
+            margin-top: 60px;
+        }
+
+        .footer a {
+            color: var(--color-text);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: var(--color-accent);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .cta-title {
+                font-size: 32px;
+            }
+
+            .stats {
+                gap: 20px;
+            }
+
+            .tabs {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">COMANDOS AI</div>
+        <div class="nav-top">
+            <a href="#video">ГАЙД С ВИДЕО</a>
+            <a href="#text">ГАЙД ТЕКСТ</a>
+        </div>
+        <div class="version-badge">3 ВЕРСИЯ</div>
+        <div class="subtitle">ПОШАГОВЫЙ ГАЙД</div>
+        <h1 class="hero-title">
+            САЙТ ЗА ВЕЧЕР,<br>
+            ПОКА<br>
+            КОНКУРЕНТЫ<br>
+            ПЛАТЯТ <span class="highlight">300 000 &#8381;</span>
+        </h1>
+        <p class="hero-description">
+            Готовый AI-стек от анализа конкурентов до живого сайта в интернете. Никакой теории — только то, что реально работает.
+        </p>
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number">0 &#8381;</span>
+                <span class="stat-label">СТОИМОСТЬ</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">1 вечер</span>
+                <span class="stat-label">СКОРОСТЬ</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">5</span>
+                <span class="stat-label">ШАГОВ</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active">01<br>PERPLEXITY</div>
+            <div class="tab active">02<br>NOTEBOOKLM</div>
+            <div class="tab active">03<br>GEMINI</div>
+            <div class="tab active">04<br>ANTIGRAVITY</div>
+            <div class="tab active">05<br>VERCEL</div>
+        </div>
+
+        <!-- ШАГ 01 -->
+        <div class="step-card active">
+            <div class="step-header">
+                <div class="step-title-wrapper">
+                    <span class="step-number">01</span>
+                    <h2 class="step-title">РАЗВЕДКА РЫНКА</h2>
+                </div>
+                <div class="step-time">&#9201; 15 МИН</div>
+            </div>
+            <div class="step-content">
+                <div class="step-meta">ШАГ 1 &#8226; PERPLEXITY</div>
+
+                <p class="step-description">
+                    Наши лучшие друзья — URL конкурентов и NotebookLM со встроенным поиском. AI забирает из интернета актуальные конкурентные преимущества. Это язык эксклюзивных преимуществ.
+                </p>
+
+                <div class="warning-box">
+                    <strong>&#9888; Perplexity работает в России без VPN.</strong> Регистрация через email — 2 минуты.
+                </div>
+
+                <ul class="task-list">
+                    <li>Откройте <strong>perplexity.ai</strong> — New Thread</li>
+                    <li>Вставьте промпт №1, заменив <strong>[НИША]</strong> и <strong>[ГОРОД]</strong></li>
+                    <li>Из ответа скопируйте только URL-ссылки — сохраните в Google Docs</li>
+                    <li>Вставьте промпт №2 — скопируйте весь текст ответа целиком — пойдёт в NotebookLM</li>
+                </ul>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <div class="code-title">ПРОМПТ №1 – КОНКУРЕНТЫ</div>
+                        <button class="copy-btn" onclick="copyCode('code-step1a')">&#128203; КОПИРОВАТЬ</button>
+                    </div>
+                    <div class="code-block" id="code-step1a">Подбери 10 сайтов по нише [НИША] в городе [ГОРОД] с высокими рейтингами на Google и Яндексе.
+
+Для каждого сайта дай:
+– Название компании
+– Клиентский сегмент (кто покупает)
+– Основной оффер (что обещают)
+– Ссылку URL главной страницы
+– Каналы трафика, если видно (соцсети, контекст, SEO)
+– Чем они отличаются от других, в чем их фишка</div>
+                </div>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <div class="code-title">ПРОМПТ №2 – БОЛИ АУДИТОРИИ</div>
+                        <button class="copy-btn" onclick="copyCode('code-step1b')">&#128203; КОПИРОВАТЬ</button>
+                    </div>
+                    <div class="code-block" id="code-step1b">У тебя есть реальные боли, страхи и возражения клиентов по нише [НИША], которые они пишут в [ФОРУМЫ / ОТЗЫВЫ / ЧАТЫ].
+
+Структурируй эти данные по категориям:
+– Страхи до покупки / услуги
+– Ожидания от результата
+– Основные возражения против покупки
+– Ошибки, которые клиенты уже совершили
+– Как они выбирают исполнителя
+– На что больше всего обращают внимание по цене
+
+Сделай список из 20–30 самых частых и сильных формулировок, сохраняя язык клиентов.</div>
+                </div>
+
+                <div class="success-list">
+                    <div class="success-list-title">&#10003; ЧТО ПОЛУЧАЕМ</div>
+                    <ul>
+                        <li>Список URL 10 конкурентов — сохраняем в Google Docs</li>
+                        <li>Текст с болями аудитории — сохраняем целиком</li>
+                        <li>Оба материала готовы для загрузки в NotebookLM</li>
+                    </ul>
+                </div>
+
+                <button class="complete-btn">&#10003; ШАГ ВЫПОЛНЕН – СЛЕДУЮЩИЙ</button>
+            </div>
+        </div>
+
+        <!-- ШАГ 02 -->
+        <div class="step-card active">
+            <div class="step-header">
+                <div class="step-title-wrapper">
+                    <span class="step-number">02</span>
+                    <h2 class="step-title">BAR-АНАЛИЗ КОНКУРЕНТОВ</h2>
+                </div>
+                <div class="step-time">&#9201; 15 МИН</div>
+            </div>
+            <div class="step-content">
+                <div class="step-meta">ШАГ 2 &#8226; NOTEBOOKLM</div>
+
+                <p class="step-description">
+                    Загружаем сайты конкурентов и боли аудитории. AI читает за нас и вытаскивает неочевидные потребности. Это ваши конкурентные преимущества.
+                </p>
+
+                <div class="warning-box">
+                    <strong>&#9888; NotebookLM работает без ограничений.</strong> Сайты конкурентов — как Website-источники. Боли из Perplexity — как Copied Text.
+                </div>
+
+                <ul class="task-list">
+                    <li>Откройте <strong>notebooklm.google.com</strong> — New Notebook</li>
+                    <li>Add Source — <strong>Website</strong> — вставьте URL конкурентов. Повторите для 5–7 сайтов</li>
+                    <li>Add Source — <strong>Copied Text</strong> — вставьте весь текст болей из Perplexity</li>
+                    <li>Ждите загрузку 1–2 минуты — вставляйте промпт в чат</li>
+                </ul>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <div class="code-title">ПРОМПТ №3 – BAR-АНАЛИЗ</div>
+                        <button class="copy-btn" onclick="copyCode('code-step2')">&#128203; КОПИРОВАТЬ</button>
+                    </div>
+                    <div class="code-block" id="code-step2">Проанализируй все загруженные сайты конкурентов и блоки боли аудитории.
+
+Сделай BAR-анализ по структуре:
+1. B — Что ДЕЛАЕТ ВСЕ — что обязательно есть почти на каждом сайте
+2. A — Что НЕ ЗАКРЫВАЕТ НИКТО — боли клиентов, которые не закрывает ни один конкурент (по возможностям)
+3. R — СИЛЬНЫЕ МЕСТА конкретных конкурентов — в чем они реально выделяются
+4. На основе этих данных сформулируй список из 10–15 гипотез, какие новые офферы и формулировки мы можем использовать на нашем сайте, чтобы быть сильнее всех.</div>
+                </div>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <div class="code-title">ПРОМПТ №4 – СТРУКТУРА ЛЕНДИНГА</div>
+                        <button class="copy-btn" onclick="copyCode('code-step2b')">&#128203; КОПИРОВАТЬ</button>
+                    </div>
+                    <div class="code-block" id="code-step2b">На основе BAR-анализа предложи структуру лендинга для [ВАШ НИША].
+
+Для каждого блока укажи:
+– Название секции
+– Главную задачу блока
+– Какую боль / желание закрывает
+– Какой основной оффер нужно озвучить
+– Ключевые сообщения для клиента
+
+Сделай таблицей в текстовом виде.</div>
+                </div>
+
+                <div class="success-list">
+                    <div class="success-list-title">&#10003; ЧТО ПОЛУЧАЕМ</div>
+                    <ul>
+                        <li>BAR-анализ — неожиданные потребности и ваши преимущества</li>
+                        <li>Структуру лендинга с обоснованием каждого блока</li>
+                        <li>Сохраняем в Google Docs — будет базой для текстов</li>
+                    </ul>
+                </div>
+
+                <button class="complete-btn">&#10003; ШАГ ВЫПОЛНЕН – СЛЕДУЮЩИЙ</button>
+            </div>
+        </div>
+
+        <!-- ШАГ 03 -->
+        <div class="step-card active">
+            <div class="step-header">
+                <div class="step-title-wrapper">
+                    <span class="step-number">03</span>
+                    <h2 class="step-title">ТЕКСТЫ НА ЯЗЫКЕ КЛИЕНТА</h2>
+                </div>
+                <div class="step-time">&#9201; 15 МИН</div>
+            </div>
+            <div class="step-content">
+                <div class="step-meta">ШАГ 3 &#8226; GEMINI</div>
+
+                <p class="step-description">
+                    Пишем тексты всех секций на основе данных из NotebookLM. Не шаблонные фразы — конкретные ответы на страхи клиента.
+                </p>
+
+                <div class="warning-box">
+                    <strong>&#9888; Нужен Google-аккаунт и регион не РФ.</strong> Альтернатива: Cursor или Claude Code с тем же промптом — результат будет похожим.
+                </div>
+
+                <ul class="task-list">
+                    <li>Откройте <strong>gemini.google.com</strong> — выберите Gemini 2.5 Pro</li>
+                    <li>Вставьте промпт №5 — BAR-анализ из NotebookLM в отмеченное место</li>
+                    <li>Вставьте промпт №6 — тексты всех блоков и секций для лендинга</li>
+                    <li>Скопируйте тексты и сохраните их в один документ</li>
+                </ul>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <div class="code-title">ПРОМПТ №5 – СИСТЕМНЫЙ КОНТЕКСТ</div>
+                        <button class="copy-btn" onclick="copyCode('code-step3a')">&#128203; КОПИРОВАТЬ</button>
+                    </div>
+                    <div class="code-block" id="code-step3a">Ты — копирайтер для продуктово-сервисного рынка.
+
+Твоя задача — написать тексты лендинга, которые:
+– опираются на реальный спрос и боли клиентов,
+– учитывают анализ конкурентов,
+– показывают конкретную выгоду, а не общие слова,
+– говорят с клиентом простым человеческим языком,
+– каждый абзац отвечает на один конкретный вопрос клиента.
+
+Ниже — BAR-анализ и структура лендинга:
+
+[ВСТАВЬ BAR-АНАЛИЗ И СТРУКТУРУ ЛЕНДИНГА ИЗ NOTEBOOKLM]</div>
+                </div>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <div class="code-title">ПРОМПТ №6 – ВСЕ ТЕКСТЫ ЛЕНДИНГА</div>
+                        <button class="copy-btn" onclick="copyCode('code-step3b')">&#128203; КОПИРОВАТЬ</button>
+                    </div>
+                    <div class="code-block" id="code-step3b">Напиши тексты для всех секций лендинга.
+
+1. HERO – Н1 (без громких слов, до 30 слов), подзаголовок, смарт-оффер, 3–5 буллетов, CTA (кнопка).
+2. БЛОК О НАС – факты и цифры, без воды.
+3. УСЛУГИ / ПРОДУКТ – что именно делаем, в чем результат.
+4. КЕЙСЫ – 3–5 штук с цифрами до / после и результатом.
+5. МАСТЕР / ЭКСПЕРТ – кто будет делать работу, кратко.
+6. ВОПРОС–ОТВЕТ – 5–7 частых вопросов и ответы.
+7. ФИНАЛЬНЫЙ БЛОК – повтор оффера и сильный призыв к действию.
+
+Язык: русский. Тон: живой, уверенный, без нагнетания и без канцелярита.</div>
+                </div>
+
+                <div class="success-list">
+                    <div class="success-list-title">&#10003; ЧТО ПОЛУЧАЕМ</div>
+                    <ul>
+                        <li>Тексты всех секций — как живые блоки, не шаблоны</li>
+                        <li>Каждый абзац отвечает конкретной боли или страху</li>
+                        <li>Сохраняем в Google Docs — для Antigravity</li>
+                    </ul>
+                </div>
+
+                <button class="complete-btn">&#10003; ШАГ ВЫПОЛНЕН – СЛЕДУЮЩИЙ</button>
+            </div>
+        </div>
+
+        <!-- ШАГ 04 -->
+        <div class="step-card active">
+            <div class="step-header">
+                <div class="step-title-wrapper">
+                    <span class="step-number">04</span>
+                    <h2 class="step-title">ДИЗАЙН И КОД – АВТОНОМНО</h2>
+                </div>
+                <div class="step-time">&#9201; 15 МИН</div>
+            </div>
+            <div class="step-content">
+                <div class="step-meta">ШАГ 4 &#8226; ANTIGRAVITY + STITCH</div>
+
+                <p class="step-description">
+                    Один промпт — Antigravity автономно создаёт дизайн в Stitch, пишет React-код, собирает сайт. Вы ничего не настраиваете — AI работает в упряжке сам.
+                </p>
+
+                <div class="warning-box">
+                    <strong>&#9888; Нужен Google-аккаунт и регион не РФ.</strong> Альтернатива: Cursor или Claude Code с тем же промптом — результат будет похожим.
+                </div>
+
+                <ul class="task-list">
+                    <li>Откройте <strong>antigravity.google.com</strong> — New Project &#8594; терминал</li>
+                    <li>Вставьте команду установки skill — Enter — 30 секунд</li>
+                    <li>Вставьте главный промпт — замените переменные — ждите 7–10 минут</li>
+                    <li>Stitch экспортирует сайт в отдельной вкладке — там рисуется дизайн. Не трогайте ничего.</li>
+                </ul>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <div class="code-title">КОМАНДА УСТАНОВКИ SKILL</div>
+                        <button class="copy-btn" onclick="copyCode('code1')">&#128203; КОПИРОВАТЬ</button>
+                    </div>
+                    <div class="code-block" id="code1">npx skills add google-labs-code/stitch-skills --skill stitch-loop --global</div>
+                </div>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <div class="code-title">ПРОМПТ №7 – ГЛАВНЫЙ ПРОМПТ ANTIGRAVITY</div>
+                        <button class="copy-btn" onclick="copyCode('code2')">&#128203; КОПИРОВАТЬ</button>
+                    </div>
+                    <div class="code-block" id="code2">Using stitch-loop skill, create a complete landing page for [НАЗВАНИЕ БРЕНДА].
+
+Аудитория: [АУДИТОРИЯ И ИХ ГЛАВНЫЕ СТРАХИ].
+
+Design direction:
+– Style: [минимализм / контраст / монохромность]
+– Branding: [ЛОГОТИП / ЦВЕТА]
+– Accents: [АКЦЕНТНЫЙ ЦВЕТ]
+– Typography: крупные serif заголовки, clean sans serif body
+– Clean layout, много воздуха
+
+Content language: Russian
+
+Generate these page sections one by one:
+1. Hero – H1, подзаголовок, CTA, «почему сейчас», 3–5 буллетов.
+2. Services – 3–5 услуги
+3. Team – 3 профиля специалистов
+4. Testimonials – 3 аутентичных отзывов
+5. Booking/Contact form
+
+Export to React with Tailwind CSS. Mobile responsive.</div>
+                </div>
+
+                <div class="success-list">
+                    <div class="success-list-title">&#10003; ЧТО ПОЛУЧАЕМ</div>
+                    <ul>
+                        <li>Универсальный дизайн всего лендинга в Stitch</li>
+                        <li>React-код с Tailwind CSS — готов к публикации</li>
+                        <li>Мобильная версия — адаптирована автоматически</li>
+                    </ul>
+                </div>
+
+                <button class="complete-btn">&#10003; ШАГ ВЫПОЛНЕН – СЛЕДУЮЩИЙ</button>
+            </div>
+        </div>
+
+        <!-- ШАГ 05 -->
+        <div class="step-card active">
+            <div class="step-header">
+                <div class="step-title-wrapper">
+                    <span class="step-number">05</span>
+                    <h2 class="step-title">ПУБЛИКАЦИЯ ЗА 3 КЛИКА</h2>
+                </div>
+                <div class="step-time">&#9201; 5 МИН</div>
+            </div>
+            <div class="step-content">
+                <div class="step-meta">ШАГ 5 &#8226; VERCEL</div>
+
+                <p class="step-description">
+                    Публикуем сайт в интернет. Если у вас уже есть репозиторий — используйте вкладку «Вручную».
+                </p>
+
+                <div class="warning-box">
+                    <strong>Вариант 1 — AI агент (авто).</strong> Antigravity сам создаст репозиторий и зальёт код, Vercel подхватит его автоматически.
+                </div>
+
+                <ul class="task-list">
+                    <li>В чате Antigravity напишите команду ниже — AI создаст GitHub-репозиторий сам</li>
+                    <li>Откройте <strong>vercel.com</strong> — войдите через GitHub — New Project</li>
+                    <li>Выберите репозиторий — <strong>Deploy</strong> — 60 секунд</li>
+                    <li>Сайт живой — Vercel даст публичный URL</li>
+                </ul>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <div class="code-title">КОМАНДА ДЛЯ AI-АГЕНТА</div>
+                        <button class="copy-btn" onclick="copyCode('code-step5a')">&#128203; КОПИРОВАТЬ</button>
+                    </div>
+                    <div class="code-block" id="code-step5a">Push this project to a new GitHub repository called [awesome-landing].
+Then provide me the repository URL.</div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Вариант 2 — ВРУЧНУЮ (ТЕРМИНАЛ).</strong> Если вы хотите контролировать процесс публикации.
+                </div>
+
+                <ul class="task-list">
+                    <li>Локально инициализируйте git-репозиторий и закоммитьте код</li>
+                    <li>Создайте пустой репозиторий на GitHub</li>
+                    <li>Привяжите удалённый origin и выполните <strong>git push</strong></li>
+                    <li>Подключите репозиторий к Vercel и нажмите Deploy</li>
+                </ul>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <div class="code-title">КОМАНДЫ ПУБЛИКАЦИИ ВРУЧНУЮ</div>
+                        <button class="copy-btn" onclick="copyCode('code-step5b')">&#128203; КОПИРОВАТЬ</button>
+                    </div>
+                    <div class="code-block" id="code-step5b">git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin [ВАШ_GITHUB_URL]
+git push -u origin main</div>
+                </div>
+
+                <div class="success-list">
+                    <div class="success-list-title">&#10003; ГОТОВО</div>
+                    <ul>
+                        <li>Сайт живой в интернете по публичному URL</li>
+                        <li>SSL-сертификат (https) — автоматически</li>
+                        <li>Можно привязать собственный домен</li>
+                        <li>Правки — через git push или новый запуск Antigravity</li>
+                    </ul>
+                </div>
+
+                <button class="complete-btn">&#10003; ШАГ ВЫПОЛНЕН – СЛЕДУЮЩИЙ</button>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <div class="cta-badge">ХОЧЕШЬ БОЛЬШЕ?</div>
+            <h2 class="cta-title">
+                УЧИСЬ ЗАРАБАТЫВАТЬ<br>
+                С AI, А НЕ <span class="highlight">ИГРАТЬСЯ</span>
+            </h2>
+            <p class="cta-description">
+                Делюсь реальными пошаговыми гайдами и готовыми инструментами — бери и сразу внедряй в бизнес. Никакой теории. Только то, что приносит деньги, экономит время и повышает эффективность.
+            </p>
+            <div class="cta-features">
+                <div class="cta-feature">Зарабатывать больше с AI</div>
+                <div class="cta-feature">Автоматизировать бизнес</div>
+                <div class="cta-feature">Запускать бизнес на AI</div>
+            </div>
+            <a href="#" class="cta-button">&#9889; ПЕРЕЙТИ В TELEGRAM</a>
+            <a href="#" class="social-link">@ai_comandos</a>
+        </div>
+
+        <div class="footer">
+            <strong>ДМИТРИЙ ПОПОВ</strong> &#8226; AI БИЗНЕС СТРАТЕГ
+            <br><br>
+            <a href="#">@ai_comandos</a>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(codeId) {
+            const codeElement = document.getElementById(codeId);
+            const text = codeElement.innerText;
+
+            navigator.clipboard.writeText(text).then(function() {
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '\u2713 СКОПИРОВАНО';
+                button.style.background = '#4ade80';
+
+                setTimeout(function() {
+                    button.innerHTML = originalText;
+                    button.style.background = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
